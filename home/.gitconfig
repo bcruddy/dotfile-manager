@@ -1,0 +1,13 @@
+[core]
+	excludesfile = /Users/bcruddy/.gitignore_global
+[user]
+	name = Brian Ruddy
+	email = brian.ruddy@ibm.com
+[alias]
+	sync = !git checkout master && git pull --ff-only upstream master && git push origin master
+	syncb = "!GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) && git pull --ff-only upstream $GIT_BRANCH && git push origin $GIT_BRANCH"
+	cpr = "!f() { git fetch upstream refs/pull/$1/head && git checkout FETCH_HEAD; }; f"
+	lol = log --oneline --graph --decorate --all
+	rb = "!GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) && git sync && git checkout $GIT_BRANCH && git rebase origin/master"
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat

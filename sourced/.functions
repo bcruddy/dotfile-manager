@@ -1,0 +1,50 @@
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+reload_shell () {
+	source ~/.bash_profile;
+
+	echo "";
+	echo "Shell has been reloaded";
+	echo "";
+}
+
+# sync all git repositories in the $MARKETPLACE directory (exported from .extra)
+# git sync is a git alias:
+#	 !git checkout master && git pull --ff-only upstream master && git push origin master
+sync_mp () {
+	echo "";
+
+	INIT_DIR=$PWD;
+
+	for dir in $MARKETPLACE/*; do
+		cd $dir;
+
+		if [ -d ".git" ]; then
+            echo "";
+            printf "${BLUE}Syncing $dir${NC}\n";
+			git sync
+			echo "";
+		fi
+	done
+	unset dir
+
+	cd $INIT_DIR;
+}
+
+# run individual nautilus test. Must be run from nautilus project root so I used a base filepath
+# that would allow autocomplete to work
+nautilus_test () {
+	TEST_FILE_PATH=$1;
+
+	mocha --timeout 5000 --compilers js:babel/register --recursive --require ./ ./$TEST_FILE_PATH
+}
+
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+curl_postf() {
+	curl -i -X POST -H "Conent-Type: multipart/form-data" -F "data=@$1" $2 #[abs file path, url]
+}
