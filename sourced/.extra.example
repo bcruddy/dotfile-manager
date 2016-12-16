@@ -6,3 +6,5 @@ export FOO_DEPLOY_KEY="barbazquux"
 export PATH="/usr/local/bin:$PATH"
 export NODE_6_PATH="$HOME/.nvm/versions/node/v6.9.2/bin/node"
 export NODE_4_PATH="$HOME/.nvm/versions/node/v4.6.0/bin/node"
+
+git config --global user.email "email@address.com"

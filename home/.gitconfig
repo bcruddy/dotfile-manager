@@ -2,7 +2,7 @@
 	excludesfile = /Users/bcruddy/.gitignore_global
 [user]
 	name = Brian Ruddy
-	email = brian.ruddy@ibm.com
+	email = foo.bar@baz.com # set in .extra
 [alias]
 	sync = !git checkout master && git pull --ff-only upstream master && git push origin master
 	syncb = "!GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) && git pull --ff-only upstream $GIT_BRANCH && git push origin $GIT_BRANCH"

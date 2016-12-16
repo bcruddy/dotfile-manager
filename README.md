@@ -20,3 +20,8 @@ They can be synced back and forth using:
 ### sourced
 `.bash_profile` sources the files in this directory when a new shell loads.
 `.extra` is intentionally ignored in this repo, it should contain sensitive, non-public info and, since it loads first, your `$PATH`. See `sourced/.extra.example` for an example.
+
+### notes
+In order to keep my email address off of github, I included the following in my `.extra` file:
+
+    git config --global user.email "email@address.com"
