@@ -2,4 +2,4 @@ alias market="cd ~/Code/marketplace/"
 alias ls='ls -GFh' # color coding
 alias grepr='grep -irn $1 $2' # [expression, directory] recursive grep with line numbers
 alias ss='m screensaver' # m-cli screensaver https://github.com/rgcr/m-cli
-alias mp_config='sudo vi /usr/local/etc/nginx/servers/marketplace'
+alias mp_nginx_config='sudo vi /usr/local/etc/nginx/servers/marketplace'
