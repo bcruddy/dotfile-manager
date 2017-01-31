@@ -33,12 +33,16 @@ sync_mp () {
 	cd $INIT_DIR;
 }
 
-# run individual nautilus test. Must be run from nautilus project root so I used a base filepath
-# that would allow autocomplete to work
+# print directory contents permissions as an octal
+perms () {
+    stat -f '%A %N' *
+}
+
+# run individual nautilus test. Must be run from nautilus project root for autocomplete
 nautilus_test () {
 	TEST_FILE_PATH=$1;
 
-	mocha --timeout 5000 --compilers js:babel/register --recursive --require ./ ./$TEST_FILE_PATH
+	./node_modules/.bin/mocha --timeout 5000 --compilers js:babel/register --recursive --require ./ ./$TEST_FILE_PATH
 }
 
 parse_git_branch() {
