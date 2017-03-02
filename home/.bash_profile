@@ -10,3 +10,7 @@ fi
 if [ -f ".nvmrc" ]; then
 	 nvm use
 fi
+
+if [ -f "_env.sh" ]; then
+    ./_env.sh
+fi

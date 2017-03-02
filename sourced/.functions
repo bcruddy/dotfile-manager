@@ -3,6 +3,8 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 reload_shell () {
+    echo "Reloading shell...";
+
 	source ~/.bash_profile;
 
 	echo "";
@@ -52,3 +54,16 @@ parse_git_branch() {
 curl_postf() {
 	curl -i -X POST -H "Conent-Type: multipart/form-data" -F "data=@$1" $2 #[abs file path, url]
 }
+personal_github() {
+  git config --global user.email $PERSONAL_EMAIL
+  echo "setting git global user email to $(git config --global user.email)"
+
+}
+
+work_github() {
+  git config --global user.email $WORK_EMAIL
+  echo "setting git global user email to $(git config --global user.email)"
+
+}
+
+work_github
