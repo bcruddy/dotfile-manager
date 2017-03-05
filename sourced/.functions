@@ -12,6 +12,32 @@ reload_shell () {
 	echo "";
 }
 
+pr_mlp_landing () {
+    cd $MARKETPLACE/mp-landing-content
+
+    git sync
+
+    cp -R preview/landing-page/* production/landing-page
+
+    git checkout -b deploy-landing
+    git add .
+    git commit -m "deploy landing page $1"
+    git push origin deploy-landing
+}
+
+pr_mlp_about () {
+    cd $MARKETPLACE/mp-landing-content
+
+    git sync
+
+    cp -R preview/about-page/* production/about-page
+
+    git checkout -b deploy-about
+    git add .
+    git commit -m "deploy about page $1"
+    git push origin deploy-about
+}
+
 # sync all git repositories in the $MARKETPLACE directory (exported from .extra)
 # git sync is a git alias:
 #	 !git checkout master && git pull --ff-only upstream master && git push origin master
