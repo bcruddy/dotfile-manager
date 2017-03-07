@@ -13,7 +13,7 @@ reload_shell () {
 }
 
 pr_mlp_landing () {
-    cd $MARKETPLACE/mp-landing-content
+    cd $WORKSPACE/mp-landing-content
 
     git sync
 
@@ -26,7 +26,7 @@ pr_mlp_landing () {
 }
 
 pr_mlp_about () {
-    cd $MARKETPLACE/mp-landing-content
+    cd $WORKSPACE/mp-landing-content
 
     git sync
 
@@ -38,15 +38,15 @@ pr_mlp_about () {
     git push origin deploy-about
 }
 
-# sync all git repositories in the $MARKETPLACE directory (exported from .extra)
+# sync all git repositories in the $WORKSPACE directory (exported from .extra)
 # git sync is a git alias:
 #	 !git checkout master && git pull --ff-only upstream master && git push origin master
-sync_mp () {
+workspace_sync () {
 	echo "";
 
 	INIT_DIR=$PWD;
 
-	for dir in $MARKETPLACE/*; do
+	for dir in $WORKSPACE/*; do
 		cd $dir;
 
 		if [ -d ".git" ]; then
