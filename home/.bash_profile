@@ -3,6 +3,9 @@ for file in ~/Code/dotfile-manager/sourced/.{extra,exports,aliases,functions}; d
 done
 unset file
 
+# load RVM
+source ~/.rvm/scripts/rvm
+
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
 fi
@@ -12,5 +15,5 @@ if [ -f ".nvmrc" ]; then
 fi
 
 if [ -f "_env.sh" ]; then
-    ./_env.sh
+    source ./_env.sh
 fi
