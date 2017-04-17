@@ -6,5 +6,6 @@ alias ss='m screensaver' # m-cli screensaver https://github.com/rgcr/m-cli
 alias work="cd ~/Code/workspace/"
 alias mp_nginx_config='sudo vi /usr/local/etc/nginx/servers/marketplace.conf'
 alias clean_npm_install='nvm use && rm -rf node_modules/ && npm cache clean && npm install'
+alias clean_yarn_install='nvm use && rm -rf node_modules/ && yarn cache clean && yarn install'
 alias ..='cd ../'
 alias ...='cd ../../'

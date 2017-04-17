@@ -44,7 +44,7 @@ pr_mlp_about () {
 workspace_sync () {
 	echo "";
 
-	INIT_DIR=$PWD;
+	local INIT_DIR=$PWD;
 
 	for dir in $WORKSPACE/*; do
 		cd $dir;
@@ -52,7 +52,7 @@ workspace_sync () {
 		if [ -d ".git" ]; then
             echo "";
             printf "${BLUE}Syncing $dir${NC}\n";
-			git sync
+			git sync && git fetch -p
 			echo "";
 		fi
 	done
@@ -68,7 +68,7 @@ perms () {
 
 # run individual nautilus test. Must be run from nautilus project root for autocomplete
 nautilus_test () {
-	TEST_FILE_PATH=$1;
+	local TEST_FILE_PATH=$1;
 
 	./node_modules/.bin/mocha --timeout 5000 --compilers js:babel/register --recursive --require ./ ./$TEST_FILE_PATH
 }
