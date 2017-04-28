@@ -7,35 +7,7 @@ reload_shell () {
 
 	source ~/.bash_profile;
 
-	echo "";
 	echo "Shell has been reloaded";
-	echo "";
-}
-
-pr_mlp_landing () {
-    cd $WORKSPACE/mp-landing-content
-
-    git sync
-
-    cp -R preview/landing-page/* production/landing-page
-
-    git checkout -b deploy-landing
-    git add .
-    git commit -m "deploy landing page $1"
-    git push origin deploy-landing
-}
-
-pr_mlp_about () {
-    cd $WORKSPACE/mp-landing-content
-
-    git sync
-
-    cp -R preview/about-page/* production/about-page
-
-    git checkout -b deploy-about
-    git add .
-    git commit -m "deploy about page $1"
-    git push origin deploy-about
 }
 
 # sync all git repositories in the $WORKSPACE directory (exported from .extra)
@@ -80,16 +52,21 @@ parse_git_branch() {
 curl_postf() {
 	curl -i -X POST -H "Conent-Type: multipart/form-data" -F "data=@$1" $2 #[abs file path, url]
 }
+
 personal_github() {
   git config --global user.email $PERSONAL_EMAIL
   echo "setting git global user email to $(git config --global user.email)"
-
 }
 
 work_github() {
   git config --global user.email $WORK_EMAIL
   echo "setting git global user email to $(git config --global user.email)"
+}
 
+ssh-docker() {
+    local DOCKER_CONTAINER_ID=$1
+
+    docker exec -it $DOCKER_CONTAINER_ID /bin/bash
 }
 
 work_github
