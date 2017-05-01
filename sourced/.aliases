@@ -2,6 +2,8 @@ alias ls='ls -GFh' # color coding
 alias lss='du -hs .'
 alias grepr='grep -irn $1 $2' # [expression, directory] recursive grep with line numbers
 
+alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+
 alias ss='m screensaver' # m-cli screensaver https://github.com/rgcr/m-cli
 alias work="cd ~/Code/workspace/"
 alias mp_nginx_config='sudo vi /usr/local/etc/nginx/servers/marketplace.conf'
