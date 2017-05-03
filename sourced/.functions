@@ -69,4 +69,8 @@ ssh-docker() {
     docker exec -it $DOCKER_CONTAINER_ID /bin/bash
 }
 
+deploy_bcr() {
+    ssh_bcr "cd $RUDDYIO_DIR && ./deploy_web.sh"
+}
+
 work_github
