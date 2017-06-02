@@ -38,13 +38,6 @@ perms () {
     stat -f '%A %N' *
 }
 
-# run individual nautilus test. Must be run from nautilus project root for autocomplete
-nautilus_test () {
-	local TEST_FILE_PATH=$1;
-
-	./node_modules/.bin/mocha --timeout 5000 --compilers js:babel/register --recursive --require ./ ./$TEST_FILE_PATH
-}
-
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
@@ -58,11 +51,6 @@ personal_github() {
   echo "setting git global user email to $(git config --global user.email)"
 }
 
-work_github() {
-  git config --global user.email $WORK_EMAIL
-  echo "setting git global user email to $(git config --global user.email)"
-}
-
 ssh-docker() {
     local DOCKER_CONTAINER_ID=$1
 
@@ -72,5 +60,3 @@ ssh-docker() {
 deploy_bcr() {
     ssh_bcr "cd $RUDDYIO_DIR && ./deploy_web.sh"
 }
-
-work_github

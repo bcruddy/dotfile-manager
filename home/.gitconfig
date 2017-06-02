@@ -1,7 +1,7 @@
 [core]
 	excludesfile = /Users/bcruddy/.gitignore_global
 [user]
-	name = Brian Ruddy
+	name = brian ruddy
 	email = briancruddy@gmail.com
 [alias]
 	sync = !git checkout master && git pull --ff-only upstream master && git push origin master
