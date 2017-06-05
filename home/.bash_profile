@@ -4,7 +4,11 @@ done
 unset file
 
 # load RVM
-source ~/.rvm/scripts/rvm
+# source ~/.rvm/scripts/rvm
+
+# google SDK autocomletion
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc'
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc'
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
@@ -12,8 +16,4 @@ fi
 
 if [ -f ".nvmrc" ]; then
 	 nvm use
-fi
-
-if [ -f "_env.sh" ]; then
-    source ./_env.sh
 fi

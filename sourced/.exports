@@ -1,4 +1,3 @@
-export WORKSPACE="$HOME/Code/workspace"
 export NEW_RELIC_APP_NAME="suppress_no_name_warning_locally"
 
 export NVM_DIR="$HOME/.nvm"
