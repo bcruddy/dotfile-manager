@@ -4,9 +4,7 @@ NC='\033[0m' # No Color
 
 reload_shell () {
     echo "Reloading shell...";
-
 	source ~/.bash_profile;
-
 	echo "Shell has been reloaded";
 }
 
@@ -24,13 +22,21 @@ workspace_sync () {
 		if [ -d ".git" ]; then
             echo "";
             printf "${BLUE}Syncing $dir${NC}\n";
-			git sync && git fetch -p
+			git sync
 			echo "";
 		fi
 	done
 	unset dir
 
 	cd $INIT_DIR;
+}
+
+wifi_password () {
+     ~/Code/dotfile-manager/bin/wifi-password
+}
+
+nuke_dsstore () {
+    find . -name '*.DS_Store' -type f -ls -delete
 }
 
 # print directory contents permissions as an octal
@@ -46,17 +52,28 @@ curl_postf() {
 	curl -i -X POST -H "Conent-Type: multipart/form-data" -F "data=@$1" $2 #[abs file path, url]
 }
 
-personal_github() {
-  git config --global user.email $PERSONAL_EMAIL
-  echo "setting git global user email to $(git config --global user.email)"
+eth () {
+    curl https://api.gemini.com/v1/pubticker/ethusd && echo "";
 }
 
-ssh-docker() {
-    local DOCKER_CONTAINER_ID=$1
-
-    docker exec -it $DOCKER_CONTAINER_ID /bin/bash
+btc () {
+    curl https://api.gemini.com/v1/pubticker/btcusd && echo "";
 }
 
-deploy_bcr() {
+personal_github () {
+  git config user.email $PERSONAL_EMAIL
+  echo "setting git repo user email to $(git config user.email)"
+}
+
+pendo_github () {
+    git config user.email $PENDO_EMAIL
+    echo "setting git repo user email to $(git config user.email)"
+}
+
+deploy_bcr () {
     ssh_bcr "cd $RUDDYIO_DIR && ./deploy_web.sh"
+}
+
+deploy_lookaside () {
+    ./deploy.py -A pendo-"$1" -V $2 modules/appengine/app-test.yaml
 }

@@ -1,6 +1,7 @@
 alias ls='ls -GFh' # color coding
 alias lss='du -hs .'
 alias grepr='grep -irn $1 $2' # [expression, directory] recursive grep with line numbers
+alias fit="git fetch -p"
 
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
@@ -11,3 +12,5 @@ alias clean_npm_install='nvm use && rm -rf node_modules/ && npm cache clean && n
 alias clean_yarn_install='nvm use && rm -rf node_modules/ && yarn cache clean && yarn install'
 alias ..='cd ../'
 alias ...='cd ../../'
+
+alias pendo-start="npm run gulp serve & npm start"
