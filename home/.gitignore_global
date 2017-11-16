@@ -5,3 +5,4 @@ node_modules
 .Trashes
 *.cson
 _env.sh
+_setup.sh

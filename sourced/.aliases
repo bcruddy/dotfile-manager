@@ -14,3 +14,6 @@ alias ..='cd ../'
 alias ...='cd ../../'
 
 alias pendo-start="npm run gulp serve & npm start"
+alias ks="npm run karma:start"
+
+alias crypto="node $HOME/Code/taskr/crypto"

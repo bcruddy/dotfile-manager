@@ -52,12 +52,37 @@ curl_postf() {
 	curl -i -X POST -H "Conent-Type: multipart/form-data" -F "data=@$1" $2 #[abs file path, url]
 }
 
+ltc () {
+    curl https://api.cryptonator.com/api/ticker/ltc-usd && echo ""
+}
+
 eth () {
+    # curl https://api.cryptonator.com/api/ticker/eth-usd && echo ""
     curl https://api.gemini.com/v1/pubticker/ethusd && echo "";
 }
 
 btc () {
+    # curl https://api.cryptonator.com/api/ticker/btc-usd && echo ""
     curl https://api.gemini.com/v1/pubticker/btcusd && echo "";
+}
+
+aggify() {
+    if ! jq -e '
+            ( arrays|. ) ,
+            ( objects|select(has("pipeline"))|.pipeline ),
+            ( objects|select(has("requests"))|.requests|first|.pipeline),
+            ( objects|select(has("request"))|.request|.pipeline)
+        '; then
+        >&2 echo "Bad aggregation pipeline"; return 1
+    fi | aggify_pipeline "$@"
+}
+
+aggify_pipeline() {
+    if [ "$1" == "v1" ]; then
+        jq '{name: "name", response: {mimeType: "application/json"}, request: {name: "name", requestId: "id", pipeline: .}]}'
+    else
+        jq '{name: "name", response: {location: "request", mimeType: "application/json"}, requests: [{name: "name", requestId: "id", pipeline: .}]}'
+    fi
 }
 
 personal_github () {

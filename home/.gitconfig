@@ -11,3 +11,5 @@
 	rb = "!GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) && git sync && git checkout $GIT_BRANCH && git rebase origin/master"
 	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+[grep]
+	lineNumber = true
