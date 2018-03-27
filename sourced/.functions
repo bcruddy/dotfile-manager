@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
@@ -8,35 +10,22 @@ reload_shell () {
 	echo "Shell has been reloaded";
 }
 
-# sync all git repositories in the $WORKSPACE directory (exported from .extra)
-# git sync is a git alias:
-#	 !git checkout master && git pull --ff-only upstream master && git push origin master
-workspace_sync () {
-	echo "";
+npm_install () {
+    echo "running: rm -rf node_modules && npm cache clean --force && npm install";
+    rm -rf node_modules && npm cache clean --force && npm install;
+}
 
-	local INIT_DIR=$PWD;
-
-	for dir in $WORKSPACE/*; do
-		cd $dir;
-
-		if [ -d ".git" ]; then
-            echo "";
-            printf "${BLUE}Syncing $dir${NC}\n";
-			git sync
-			echo "";
-		fi
-	done
-	unset dir
-
-	cd $INIT_DIR;
+yarn_install () {
+    echo "running: rm -rf node_modules && yarn cache clean && yarn";
+    rm -rf node_modules && yarn cache clean && yarn;
 }
 
 wifi_password () {
-     ~/Code/dotfile-manager/bin/wifi-password
+     ~/Code/dotfile-manager/bin/wifi-password;
 }
 
 nuke_dsstore () {
-    find . -name '*.DS_Store' -type f -ls -delete
+    find . -name '*.DS_Store' -type f -ls -delete;
 }
 
 # print directory contents permissions as an octal
@@ -44,29 +33,15 @@ perms () {
     stat -f '%A %N' *
 }
 
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+parse_git_branch () {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/';
 }
 
-curl_postf() {
-	curl -i -X POST -H "Conent-Type: multipart/form-data" -F "data=@$1" $2 #[abs file path, url]
+curl_postf () {
+	curl -i -X POST -H "Conent-Type: multipart/form-data" -F "data=@$1" $2; #[abs file path, url]
 }
 
-ltc () {
-    curl https://api.cryptonator.com/api/ticker/ltc-usd && echo ""
-}
-
-eth () {
-    # curl https://api.cryptonator.com/api/ticker/eth-usd && echo ""
-    curl https://api.gemini.com/v1/pubticker/ethusd && echo "";
-}
-
-btc () {
-    # curl https://api.cryptonator.com/api/ticker/btc-usd && echo ""
-    curl https://api.gemini.com/v1/pubticker/btcusd && echo "";
-}
-
-aggify() {
+aggify () {
     if ! jq -e '
             ( arrays|. ) ,
             ( objects|select(has("pipeline"))|.pipeline ),
@@ -77,7 +52,7 @@ aggify() {
     fi | aggify_pipeline "$@"
 }
 
-aggify_pipeline() {
+aggify_pipeline () {
     if [ "$1" == "v1" ]; then
         jq '{name: "name", response: {mimeType: "application/json"}, request: {name: "name", requestId: "id", pipeline: .}]}'
     else
@@ -85,20 +60,25 @@ aggify_pipeline() {
     fi
 }
 
-personal_github () {
-  git config user.email $PERSONAL_EMAIL
-  echo "setting git repo user email to $(git config user.email)"
+# Create a new directory and enter it
+function md () {
+  mkdir -p "$@" && cd "$@"
 }
 
-pendo_github () {
-    git config user.email $PENDO_EMAIL
-    echo "setting git repo user email to $(git config user.email)"
+# clean the current directory
+function clean () {
+    read -p "remove everything here? (y/N)" yn
+    if [ $yn = "y" ]; then
+        rm -rf ./* ./.*
+    fi
 }
 
-deploy_bcr () {
-    ssh_bcr "cd $RUDDYIO_DIR && ./deploy_web.sh"
+# check file size
+function fs () {
+    du -sh ${1} | awk '{print $1}'
 }
 
-deploy_lookaside () {
-    ./deploy.py -A pendo-"$1" -V $2 modules/appengine/app-test.yaml
+# check processes using a port
+function port () {
+    lsof -iTCP:$1 -sTCP:LISTEN
 }

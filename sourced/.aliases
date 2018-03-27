@@ -1,19 +1,23 @@
+#!/usr/bin/env bash
+
 alias ls='ls -GFh' # color coding
 alias lss='du -hs .'
+alias la="ls -A"
+alias ll="ls -Al"
+
 alias grepr='grep -irn $1 $2' # [expression, directory] recursive grep with line numbers
+
 alias fit="git fetch -p"
 
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
 alias ss='m screensaver' # m-cli screensaver https://github.com/rgcr/m-cli
-alias work="cd ~/Code/workspace/"
-alias mp_nginx_config='sudo vi /usr/local/etc/nginx/servers/marketplace.conf'
-alias clean_npm_install='nvm use && rm -rf node_modules/ && npm cache clean && npm install'
-alias clean_yarn_install='nvm use && rm -rf node_modules/ && yarn cache clean && yarn install'
+
 alias ..='cd ../'
 alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
 
+alias work="cd ~/Code/workspace/"
 alias pendo-start="npm run gulp serve & npm start"
 alias ks="npm run karma:start"
-
-alias crypto="node $HOME/Code/taskr/crypto"

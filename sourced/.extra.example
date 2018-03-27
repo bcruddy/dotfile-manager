@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 export FOO_DB_URL="https://db.foo.com/foobarbaz_db"
 export FOO_DB_USER="bar"
 export FOO_DB_PASSWORD="stopitalice"
