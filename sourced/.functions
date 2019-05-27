@@ -11,8 +11,13 @@ reload_shell () {
 }
 
 npm_install () {
-    echo "running: rm -rf node_modules && npm cache clean --force && npm install";
-    rm -rf node_modules && npm cache clean --force && npm install;
+    echo "running: nvm use && rm -rf node_modules && npm cache clean --force && npm install";
+
+    nvm use;
+    rm -rf node_modules;
+    npm cache clean --force;
+    npm install;
+    npx jest --clearCache;
 }
 
 yarn_install () {
@@ -60,6 +65,27 @@ aggify_pipeline () {
     fi
 }
 
+function appengine_lookaside () {
+    local ENV=$1;
+    local NAME=$2;
+
+    nvm use 8;
+    nuke_dsstore;
+    python deploy.py -A pendo-$ENV -V $NAME -M default;
+    npm set engine-strict false; # disable strict version checking
+}
+
+function designer_lookaside () {
+    local ENV=$1;
+    local NAME=$2;
+
+    nvm use 8;
+    rm -rf deploy/*
+    nuke_dsstore;
+    npm run build:env --env=$ENV;
+    ./deploy.py -A pendo-$ENV -V $NAME -M designer;
+}
+
 # Create a new directory and enter it
 function md () {
   mkdir -p "$@" && cd "$@"
@@ -81,4 +107,42 @@ function fs () {
 # check processes using a port
 function port () {
     lsof -iTCP:$1 -sTCP:LISTEN
+}
+
+function ccd () {
+    cd $1;
+
+    if [ -f "./.nvmrc" ]; then
+        nvm use;
+    fi;
+}
+
+function npm_globals () {
+    npm install -g @vue/cli yarn ndb
+}
+
+# pendo colors
+function colors () {
+    echo gray-darker-2: \#0a0c15
+    echo gray-darker-1: \#1a1c25
+    echo gray-primary: \#2a2c35
+    echo gray-lighter-1: \#3a3c45
+    echo gray-lighter-2: \#6a6c75
+    echo gray-lighter-3: \#9a9ca5
+    echo gray-lighter-4: \#babcc5
+    echo gray-lighter-5: \#dadce5
+    echo gray-lighter-6: \#eaecf1
+    echo gray-lighter-7: \#f4f4f7
+    echo gray-lighter-8: \#f8f8f9
+
+    echo pink-darker-3: \#79002b
+    echo pink-darker-2: \#9c0038
+    echo pink-darker-1: \#bd1746
+    echo pink-primary: \#ec2059
+    echo pink-lighter-1: \#ff3467
+    echo pink-lighter-2: \#ffdde6
+}
+
+function color () {
+    colors | grep $1;
 }

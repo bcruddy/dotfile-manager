@@ -13,11 +13,15 @@ alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
 alias ss='m screensaver' # m-cli screensaver https://github.com/rgcr/m-cli
 
-alias ..='cd ../'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
+alias ..='ccd ../'
+alias ...='ccd ../../'
+alias ....='ccd ../../../'
+alias .....='ccd ../../../../'
 
 alias work="cd ~/Code/workspace/"
 alias pendo-start="npm run gulp serve & npm start"
 alias ks="npm run karma:start"
+
+alias bet="TZ=UTC go test --tags=appenginevm pendo.io/"
+
+alias via="node $HOME/Code/workspace/via-ui/lib/cli"
