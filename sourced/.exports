@@ -5,6 +5,9 @@ export NEW_RELIC_APP_NAME="suppress_no_name_warning_locally"
 export NVM_DIR="$HOME/.nvm"
   . "/usr/local/opt/nvm/nvm.sh"
 
+# load RVM
+source ~/.rvm/scripts/rvm
+
 # terminal: user@machine: $PWD (branch)
 export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\[\033[33m\]\$(parse_git_branch)\[\033[00m\]\$ "
 

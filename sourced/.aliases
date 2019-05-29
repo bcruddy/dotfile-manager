@@ -18,10 +18,4 @@ alias ...='ccd ../../'
 alias ....='ccd ../../../'
 alias .....='ccd ../../../../'
 
-alias work="cd ~/Code/workspace/"
-alias pendo-start="npm run gulp serve & npm start"
-alias ks="npm run karma:start"
-
-alias bet="TZ=UTC go test --tags=appenginevm pendo.io/"
-
-alias via="node $HOME/Code/workspace/via-ui/lib/cli"
+alias work="cd ~/code/workspace/"
