@@ -1,7 +1,14 @@
+#!/usr/bin/env bash
+
 alias pendo-start="npm run gulp serve & npm start"
 alias ks="npm run karma:start"
 alias bet="TZ=UTC go test --tags=appenginevm pendo.io/"
 alias via="node $HOME/code/workspace/via-ui/lib/cli"
+
+export ANDROID_HOME=$USERPATH/Library/Android/sdk/
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home/
+export PATH=$HOME/bin:$PATH
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME
 
 function aggify () {
     if ! jq -e '
