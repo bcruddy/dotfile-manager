@@ -11,12 +11,12 @@ function reload_shell () {
 }
 
 function npm_install () {
-    echo "running: nvm use && rm -rf node_modules && npm cache clean --force && npm install";
+    echo "running: nvm use && rm -rf node_modules && npm cache clean --force && npm ci";
 
     nvm use;
     rm -rf node_modules;
     npm cache clean --force;
-    npm install;
+    npm ci;
     npx jest --clearCache;
 }
 
