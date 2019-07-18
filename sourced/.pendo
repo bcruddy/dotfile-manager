@@ -30,12 +30,30 @@ function aggify_pipeline () {
 }
 
 function appengine_lookaside () {
-    local ENV=$1;
-    local NAME=$2;
+    local env=$1;
+    local name=$2;
+    local modules=$3;
+    local base=$4;
 
-    nvm use 8;
-    nuke_dsstore;
-    python deploy.py -A pendo-$ENV -V $NAME -M default;
+    if [ -z $modules ]; then
+        modules="default";
+    fi;
+
+    if [ -z $base ]; then
+        base="master";
+    fi;
+
+    cd ../goexternal;
+    git checkout $base;
+    git pull;
+    git submodule update --init;
+
+    cd ../pendo-appengine;
+    git submodule update --init
+    nvm use 8.15; # includes npm@5.10
+    npm ci;
+    find . -name '*.DS_Store' -type f -ls -delete;
+    python deploy.py -A pendo-$env -V $name -M default;
     npm set engine-strict false; # disable strict version checking
 }
 
@@ -43,7 +61,7 @@ function designer_lookaside () {
     local ENV=$1;
     local NAME=$2;
 
-    nvm use 8;
+    nvm use;
     rm -rf deploy/*
     nuke_dsstore;
     npm run build:env --env=$ENV;
