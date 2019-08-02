@@ -35,6 +35,14 @@ function appengine_lookaside () {
     local modules=$3;
     local base=$4;
 
+    if [ -z $env ]; then
+        env="atlas";
+    fi;
+
+    if [ -z $name ]; then
+        name="br";
+    fi;
+
     if [ -z $modules ]; then
         modules="default";
     fi;
@@ -43,32 +51,25 @@ function appengine_lookaside () {
         base="master";
     fi;
 
-    cd ../goexternal;
+    echo "";
+    echo "Building and deploying lookaside version '$name' in pendo-$env from base '$base' with module(s) $modules";
+    echo "";
+
+    cd $WORKSPACE/goexternal;
     git checkout $base;
     git pull;
     git submodule update --init;
 
-    cd ../pendo-appengine;
+    cd $WORKSPACE/pendo-appengine;
     git submodule update --init
     nvm use 8.15; # includes npm@5.10
     npm ci;
     find . -name '*.DS_Store' -type f -ls -delete;
-    python deploy.py -A pendo-$env -V $name -M default;
+    python deploy.py -A pendo-$env -V $name -M $modules;
     npm set engine-strict false; # disable strict version checking
 }
 
-function designer_lookaside () {
-    local ENV=$1;
-    local NAME=$2;
-
-    nvm use;
-    rm -rf deploy/*
-    nuke_dsstore;
-    npm run build:env --env=$ENV;
-    ./deploy.py -A pendo-$ENV -V $NAME -M designer;
-}
-
-# pendo colors
+# pendo color pallete
 function colors () {
     echo gray-darker-2: \#0a0c15
     echo gray-darker-1: \#1a1c25
