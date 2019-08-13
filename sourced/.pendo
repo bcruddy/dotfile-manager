@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-alias pendo-start="npm run gulp serve & npm start"
-alias ks="npm run karma:start"
-alias bet="TZ=UTC go test --tags=appenginevm pendo.io/"
-alias via="node $HOME/code/workspace/via-ui/lib/cli"
-
 export ANDROID_HOME=$USERPATH/Library/Android/sdk/
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home/
 export PATH=$HOME/bin:$PATH
@@ -29,11 +24,11 @@ function aggify_pipeline () {
     fi
 }
 
+# usage: [skip_install=UNSET] [base=master] appengine_lookaside <env> <name> <modules>
 function appengine_lookaside () {
     local env=$1;
     local name=$2;
     local modules=$3;
-    local base=$4;
 
     if [ -z $env ]; then
         env="atlas";
@@ -61,11 +56,24 @@ function appengine_lookaside () {
     git submodule update --init;
 
     cd $WORKSPACE/pendo-appengine;
-    git submodule update --init
+    git submodule update --init;
     nvm use 8.15; # includes npm@5.10
-    npm ci;
+
+    # only install npm deps if we're deploying default AND we do not explicitly skip it
+    if [[ $modules == *default* && $skip_install != "true" ]]; then
+        npm ci;
+    else
+        echo "Skipping npm ci...";
+    fi;
+
     find . -name '*.DS_Store' -type f -ls -delete;
-    python deploy.py -A pendo-$env -V $name -M $modules;
+
+    if [ $modules == "all" ]; then
+        python deploy.py -A pendo-$env -V $name --all-modules;
+    else
+        python deploy.py -A pendo-$env -V $name -M $modules;
+    fi;
+
     npm set engine-strict false; # disable strict version checking
 }
 
@@ -94,3 +102,9 @@ function colors () {
 function color () {
     colors | grep $1;
 }
+
+alias pendo-start="npm run gulp serve & npm start"
+alias ks="npm run karma:start"
+alias bet="TZ=UTC go test --tags=appenginevm pendo.io/"
+alias via="node $HOME/code/workspace/via-ui/lib/cli"
+alias sendit=appengine_lookaside;
