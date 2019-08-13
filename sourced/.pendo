@@ -35,7 +35,7 @@ function appengine_lookaside () {
     fi;
 
     if [ -z $name ]; then
-        name="br";
+        name=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/');
     fi;
 
     if [ -z $modules ]; then
