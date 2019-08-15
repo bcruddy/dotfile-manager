@@ -39,8 +39,11 @@ function perms () {
 }
 
 function parse_git_branch () {
-    local branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-    echo " ($branch)"
+    local branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/');
+
+    if [[ -n $branch ]]; then
+        echo " ($branch)"
+    fi;
 }
 
 function curl_postf () {

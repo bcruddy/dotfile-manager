@@ -24,7 +24,7 @@ function aggify_pipeline () {
     fi
 }
 
-# usage: [skip_install=UNSET] [base=master] appengine_lookaside <env> <name> <modules>
+# usage: [skipjs=UNSET] [base=master] appengine_lookaside <env> <name> <modules>
 function appengine_lookaside () {
     local env=$1;
     local name=$2;
@@ -60,18 +60,19 @@ function appengine_lookaside () {
     nvm use 8.15; # includes npm@5.10
 
     # only install npm deps if we're deploying default AND we do not explicitly skip it
-    if [[ $modules == *default* && $skip_install != "true" ]]; then
+    if [[ $modules == *default* && $skipjs != "true" ]]; then
         npm ci;
+        npx gulp build-js-dev;
     else
-        echo "Skipping npm ci...";
+        echo "Skipping npm ci and gulp build...";
     fi;
 
     find . -name '*.DS_Store' -type f -ls -delete;
 
     if [ $modules == "all" ]; then
-        python deploy.py -A pendo-$env -V $name --all-modules;
+        python deploy.py -A pendo-$env -V $name --all-modules --skip-build-js;
     else
-        python deploy.py -A pendo-$env -V $name -M $modules;
+        python deploy.py -A pendo-$env -V $name -M $modules --skip-build-js;
     fi;
 
     npm set engine-strict false; # disable strict version checking
