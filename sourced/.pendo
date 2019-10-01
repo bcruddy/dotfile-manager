@@ -24,8 +24,9 @@ function aggify_pipeline () {
     fi
 }
 
-# usage: [skipjs=UNSET] [base=master] appengine_lookaside <env> <name> <modules>
+# usage: [skipjs=UNSET] [base=master] [pr=false] appengine_lookaside <env> <name> <modules>
 function appengine_lookaside () {
+    local branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')''
     local env=$1;
     local name=$2;
     local modules=$3;
@@ -35,7 +36,7 @@ function appengine_lookaside () {
     fi;
 
     if [ -z $name ]; then
-        name=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/');
+        name=$branch;
     fi;
 
     if [ -z $modules ]; then
@@ -44,6 +45,10 @@ function appengine_lookaside () {
 
     if [ -z $base ]; then
         base="master";
+    fi;
+
+    if [ -z $pr ]; then
+        pr="false";
     fi;
 
     echo "";
@@ -57,12 +62,12 @@ function appengine_lookaside () {
 
     cd $WORKSPACE/pendo-appengine;
     git submodule update --init;
-    nvm use 8.15; # includes npm@5.10
+    nvm use;
 
     # only install npm deps if we're deploying default AND we do not explicitly skip it
     if [[ $modules == *default* && $skipjs != "true" ]]; then
         npm ci;
-        npx gulp build-js-dev;
+        npx gulp build-dev-js;
     else
         echo "Skipping npm ci and gulp build...";
     fi;
@@ -73,6 +78,10 @@ function appengine_lookaside () {
         python deploy.py -A pendo-$env -V $name --all-modules --skip-build-js;
     else
         python deploy.py -A pendo-$env -V $name -M $modules --skip-build-js;
+    fi;
+
+    if [ $pr != "false" ]; then
+        chrome "https://github.com/pendo-io/pendo-appengine/compare/$branch?expand=1";
     fi;
 
     npm set engine-strict false; # disable strict version checking
