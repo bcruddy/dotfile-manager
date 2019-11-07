@@ -5,6 +5,11 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Hom
 export PATH=$HOME/bin:$PATH
 export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME
 
+alias pendo-start="npm run gulp serve & npm start"
+alias ks="npm run karma:start"
+alias bet="TZ=UTC go test --tags=appenginevm pendo.io/"
+alias via="node $HOME/code/workspace/via-ui/lib/cli"
+
 function aggify () {
     if ! jq -e '
             ( arrays|. ) ,
@@ -24,7 +29,7 @@ function aggify_pipeline () {
     fi
 }
 
-# usage: [skipjs=UNSET] [base=master] [pr=false] appengine_lookaside <env> <name> <modules>
+# usage: [skipjs=UNSET] [base=master] [pr=false] [default=UNSET] appengine_lookaside <env> <name> <modules>
 function appengine_lookaside () {
     local branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')''
     local env=$1;
@@ -51,6 +56,12 @@ function appengine_lookaside () {
         pr="false";
     fi;
 
+    if [ "$default" = "true" ]; then
+        default="--set-default-version";
+    else
+        default="";
+    fi;
+
     echo "";
     echo "Building and deploying lookaside version '$name' in pendo-$env from base '$base' with module(s) $modules";
     echo "";
@@ -65,7 +76,7 @@ function appengine_lookaside () {
     nvm use;
 
     # only install npm deps if we're deploying default AND we do not explicitly skip it
-    if [[ $modules == *default* && $skipjs != "true" ]]; then
+    if [[ $modules == *default* && "$skipjs" != "true" ]]; then
         npm ci;
         npx gulp build-dev-js;
     else
@@ -75,9 +86,9 @@ function appengine_lookaside () {
     find . -name '*.DS_Store' -type f -ls -delete;
 
     if [ $modules == "all" ]; then
-        python deploy.py -A pendo-$env -V $name --all-modules --skip-build-js;
+        python deploy.py $default -A pendo-$env -V $name --all-modules --skip-build-js;
     else
-        python deploy.py -A pendo-$env -V $name -M $modules --skip-build-js;
+        python deploy.py $default -A pendo-$env -V $name -M $modules --skip-build-js;
     fi;
 
     if [ $pr != "false" ]; then
@@ -85,6 +96,14 @@ function appengine_lookaside () {
     fi;
 
     npm set engine-strict false; # disable strict version checking
+}
+
+function via_lookaside () {
+    local branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')''
+
+    echo "running via lookaside --env atlas --name $branch...";
+
+    via lookaside --env atlas --name $branch;
 }
 
 # pendo color pallete
@@ -113,8 +132,5 @@ function color () {
     colors | grep $1;
 }
 
-alias pendo-start="npm run gulp serve & npm start"
-alias ks="npm run karma:start"
-alias bet="TZ=UTC go test --tags=appenginevm pendo.io/"
-alias via="node $HOME/code/workspace/via-ui/lib/cli"
 alias sendit=appengine_lookaside;
+alias letsgo=via_lookaside;
