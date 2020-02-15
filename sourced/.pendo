@@ -29,6 +29,22 @@ function aggify_pipeline () {
     fi
 }
 
+function sync_goexternal () {
+    local base=$1;
+
+    if [ -z $base ]; then
+        base="master";
+    fi;
+
+    cd $WORKSPACE/goexternal;
+    git checkout $base;
+    git pull;
+    git submodule update --init;
+
+    cd $WORKSPACE/pendo-appengine;
+    git submodule update --init;
+}
+
 # usage: [skipjs=UNSET] [base=master] [pr=false] [default=UNSET] appengine_lookaside <env> <name> <modules>
 function appengine_lookaside () {
     local branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')''
@@ -66,13 +82,7 @@ function appengine_lookaside () {
     echo "Building and deploying lookaside version '$name' in pendo-$env from base '$base' with module(s) $modules";
     echo "";
 
-    cd $WORKSPACE/goexternal;
-    git checkout $base;
-    git pull;
-    git submodule update --init;
-
-    cd $WORKSPACE/pendo-appengine;
-    git submodule update --init;
+    sync_goexternal $base;
     nvm use;
 
     # only install npm deps if we're deploying default AND we do not explicitly skip it
