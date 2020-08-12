@@ -7,6 +7,3 @@ node_modules
 _env.sh
 _setup.sh
 _postman/
-
-# temp for l10n-microservice
-# test/postman

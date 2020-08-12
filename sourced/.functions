@@ -4,27 +4,6 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-function reload_shell () {
-    echo "Reloading shell...";
-	source ~/.bash_profile;
-	echo "Shell has been reloaded";
-}
-
-function npm_install () {
-    echo "running: nvm use && rm -rf node_modules && npm cache clean --force && npm ci";
-
-    nvm use;
-    rm -rf node_modules;
-    npm cache clean --force;
-    npm ci;
-    npx jest --clearCache;
-}
-
-function yarn_install () {
-    echo "running: rm -rf node_modules && yarn cache clean && yarn";
-    rm -rf node_modules && yarn cache clean && yarn;
-}
-
 function wifi_password () {
      ~/code/dotfile-manager/bin/wifi-password;
 }
@@ -48,19 +27,6 @@ function parse_git_branch () {
 
 function curl_postf () {
 	curl -i -X POST -H "Conent-Type: multipart/form-data" -F "data=@$1" $2; #[abs file path, url]
-}
-
-# Create a new directory and enter it
-function md () {
-  mkdir -p "$@" && cd "$@"
-}
-
-# clean the current directory
-function clean () {
-    read -p "remove everything here? (y/N)" yn
-    if [ $yn = "y" ]; then
-        rm -rf ./* ./.*
-    fi
 }
 
 # check file size

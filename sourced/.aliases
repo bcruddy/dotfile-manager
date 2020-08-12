@@ -8,6 +8,7 @@ alias ll="ls -Al"
 alias grepr='grep -irn $1 $2' # [expression, directory] recursive grep with line numbers
 
 alias fit="git fetch -p"
+alias fup="git checkout master && fit && git rebase origin/master"
 
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
@@ -19,3 +20,4 @@ alias ....='ccd ../../../'
 alias .....='ccd ../../../../'
 
 alias work="cd ~/code/workspace/"
+alias opensource="cd ~/code/opensource"
