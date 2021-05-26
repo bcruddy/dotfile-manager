@@ -9,6 +9,7 @@ alias pendo-start="npm run gulp serve & npm start"
 alias ks="npm run karma:start"
 alias bet="TZ=UTC go test --tags=appenginevm pendo.io/"
 alias via="node $HOME/code/workspace/via-ui/lib/cli"
+alias po="po_darwin_amd64"
 
 function aggify () {
     if ! jq -e '

@@ -5,6 +5,12 @@ export NEW_RELIC_APP_NAME="suppress_no_name_warning_locally"
 export NVM_DIR="$HOME/.nvm"
   . "/usr/local/opt/nvm/nvm.sh"
 
+export PYENV_ROOT=$HOME/.pyenv
+export PATH=$PYENV_ROOT/bin:$PATH
+
+# load pyenv
+eval "$(pyenv init -)"
+
 # load RVM
 source ~/.rvm/scripts/rvm
 

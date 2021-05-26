@@ -15,3 +15,5 @@
 	lineNumber = true
 [rerere]
 	enabled = true
+[init]
+	defaultBranch = master
